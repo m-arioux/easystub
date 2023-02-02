@@ -1,0 +1,35 @@
+@host=http://localhost:3000
+
+PATCH {{host}}/_admin/fallback
+Content-Type: application/json
+
+{
+    "type": "JSON",
+    "statusCode": 404,
+    "json": {
+        "status": "404",
+        "details": "not found"
+    }
+}
+
+###
+
+PATCH {{host}}/_admin/fallback
+Content-Type: application/json
+
+{
+    "type": "REDIRECT",
+    "baseUrl": "http://another-api.localhost/"
+}
+
+###
+
+PATCH {{host}}/_admin/fallback
+Content-Type: application/json
+
+{
+    "type": "NOT_FOUND"
+}
+
+###
+GET {{host}}/lol
