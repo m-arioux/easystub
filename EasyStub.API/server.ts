@@ -1,38 +1,40 @@
-const express = require("express");
-const { createProxyMiddleware } = require("http-proxy-middleware");
-const morgan = require("morgan");
+import express from "express";
+import { createProxyMiddleware } from "http-proxy-middleware";
+import morgan from "morgan";
+import cors from "cors";
+
 const app = express();
 const port = 3000;
 
-let fallback = { type: "NOT_FOUND" };
+type Fallback = {
+  type: "NOT_FOUND" | "REDIRECT" | "JSON";
+  statusCode: number;
+  json?: any;
+  baseUrl?: string;
+};
 
-/**
- * @type express.Router | undefined
- */
-let router = undefined;
+let fallback: Fallback = { type: "NOT_FOUND", statusCode: 404 };
 
-/**
- * @typedef Endpoint
- * @prop {string} path
- * @prop {string} method
- * @prop {any} body
- * @prop {number} statusCode
- */
+let router: express.Router | undefined = undefined;
 
-/**
- * @typedef PatchEndpoint
- * @prop {"EDIT" | "DELETE"} action
- * @prop {Endpoint} endpoint
- */
+type Endpoint = {
+  path: string;
+  method: string;
+  body: any;
+  statusCode: number;
+};
 
-/**
- *
- * @param {Endpoint[]} endpoints
- */
-function setupRouter(endpoints) {
+type PatchEndpoint = {
+  action: "EDIT" | "DELETE";
+  endpoint: Endpoint;
+};
+
+function setupRouter(endpoints: Endpoint[]) {
   router = express.Router();
 
   router.use(morgan("combined"));
+
+  router.use(cors());
 
   router.use(express.json());
 
@@ -45,11 +47,7 @@ function setupRouter(endpoints) {
   });
 
   router.post("/_admin/endpoints", (req, res) => {
-    /**
-     * @type {PatchEndpoint}
-     */
-    const body = req.body;
-    const endpoint = body.endpoint;
+    const endpoint: Endpoint = req.body;
 
     const newEndpoints = [...endpoints, endpoint];
     setupRouter(newEndpoints);
@@ -71,7 +69,7 @@ function setupRouter(endpoints) {
     res.send();
   });
 
-  endpoints.forEach((endpoint) => {
+  for (const endpoint of endpoints) {
     router.use(endpoint.path, (req, res, next) => {
       if (req.method !== endpoint.method) {
         next();
@@ -81,7 +79,7 @@ function setupRouter(endpoints) {
       res.status(endpoint.statusCode);
       res.send(endpoint.body);
     });
-  });
+  }
 
   router.use((req, res, next) => {
     if (fallback.type === "JSON") {
@@ -107,6 +105,8 @@ function setupRouter(endpoints) {
 }
 
 app.use((req, res, next) => {
+  if (!router) throw new Error("router has not been initialized");
+
   router(req, res, next);
 });
 
