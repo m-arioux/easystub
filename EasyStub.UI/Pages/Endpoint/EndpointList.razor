@@ -1,0 +1,66 @@
+<MudSimpleTable Style="overflow-x: auto;">
+  <thead>
+    <tr>
+            @foreach (var h in headings)
+            {
+          <th>@h</th>
+            }
+
+      <!-- -->
+            @if (Actions.Count > 0)
+            {
+          <th>Actions</th>
+            }
+    </tr>
+  </thead>
+  <tbody>
+        @foreach (var endpoint in Endpoints)
+        {
+        <tr>
+          <td><b>@endpoint.Method</b> @endpoint.Path</td>
+          <td>@endpoint.StatusCode</td>
+
+                @if (Actions.Count == 0)
+                {
+              <!-- nothing -->
+                }
+                else if (Actions.Count == 1)
+                {
+              <td>
+                        @if (Actions[0].Label is null) { 
+                            <MudFab Color="Color.Primary" StartIcon="@Actions[0].Icon" @onclick="() => Actions[0].Callback?.Invoke(endpoint)" Size="Size.Small" />
+                        }
+                        else
+                        {
+                    <MudButton
+                      Variant="Variant.Filled"
+                      StartIcon="@Actions[0].Icon"
+                            @onclick="() => Actions[0].Callback?.Invoke(endpoint)"
+                      >@Actions[0].Label</MudButton
+                    >
+                        }
+              </td>
+                }
+                else
+                {
+              <td>
+                <MudMenu Icon="@Icons.Material.Filled.Menu">
+                            @foreach (var action in Actions)
+                            {
+                      <MudMenuItem Icon="@action.Icon">@action.Label</MudMenuItem>
+                            }
+                </MudMenu>
+              </td>
+                }
+        </tr>
+        } @if (Endpoints.Count() == 0)
+        {
+        <tr>
+          <td colspan="@headings.Count() + (Actions.Count == 0 ? 0 : 1)">
+            No endpoint configured
+          </td>
+        </tr>
+        }
+  </tbody>
+</MudSimpleTable>
+

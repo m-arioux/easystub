@@ -1,0 +1,30 @@
+@page "/admin/endpoints/new"
+
+@using System.Net;
+
+<PageTitle>Create a new endpoint</PageTitle>
+
+<MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" />
+
+<MudText Typo="Typo.h3" GutterBottom="true">Create a new endpoint</MudText>
+
+<MudPaper Class="pa-4">
+    <MudForm Model="@model" @bind-IsValid="@success" @bind-Errors="@errors" >
+        <MudTextField @bind-Value="model.Path" T="string" Label="Path" Required="true" RequiredError="Path is required!" />
+
+        <MudSelect @bind-Value="model.Method" T="HttpMethod" Label="Method" Required="true" RequiredError="Method is required!" AnchorOrigin="Origin.BottomCenter">
+            @foreach (var method in possibleMethods)
+            {
+                <MudSelectItem Value="method" />
+            }
+            
+        </MudSelect>
+
+        <MudAutocomplete @bind-Value="model.StatusCode" T="HttpStatusCode?" Label="Status code" Required="true" MaxItems="999" CoerceValue="true" SearchFunc="@SearchStatusCodes" ToStringFunc="@Display" ></MudAutocomplete>
+
+        <div class="d-flex align-center mt-4">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" @onclick="Create">Create</MudButton>
+        </div>
+    </MudForm>   
+</MudPaper>
+

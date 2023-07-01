@@ -1,0 +1,13 @@
+@page "/test"
+
+@using EasyStub.UI.Pages.Endpoint;
+
+<PageTitle>Try endpoints</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Try a endpoint</MudText>
+
+<EndpointList Endpoints="endpoints" Actions="listActions"></EndpointList>
+
+<MudText Typo="Typo.h5" GutterBottom="true">Returned value</MudText>
+
+<MudPaper class="pa-10 my-10" Elevation="3">@serverResponse</MudPaper>

@@ -1,15 +1,14 @@
 namespace EasyStub.UI.Pages;
 
+using EasyStub.UI.Pages.Endpoint;
 using EasyStub.UI.UseCases.GetEndpoints;
 using Microsoft.AspNetCore.Components;
 
-public record Endpoint(string path, int statusCode);
-
 public partial class Configuration : ComponentBase
 {
-    string[] headings = { "Path", "Status code", "Actions" };
-
     List<UseCases.Endpoint> endpoints;
+
+    List<EndpointList.Action> actions = new() { new("Try it", null, (d) => { Console.WriteLine(d); return Task.CompletedTask; }) };
 
     [Inject]
     private GetEndpointsUseCase getEndpoints { get; set; }
@@ -24,5 +23,4 @@ public partial class Configuration : ComponentBase
         endpoints = new();
         endpoints = await getEndpoints.Handle();
     }
-
 }
