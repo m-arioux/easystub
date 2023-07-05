@@ -5,6 +5,7 @@ using MudBlazor.Services;
 using EasyStub.UI.UseCases.GetEndpoints;
 using EasyStub.UI.Infrastructure;
 using EasyStub.UI.UseCases.AddEndpoint;
+using EasyStub.UI.UseCases.Method;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -14,6 +15,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://
 builder.Services.AddTransient<EndpointHttpClient>();
 builder.Services.AddTransient<GetEndpointsUseCase>();
 builder.Services.AddTransient<AddEndpointUseCase>();
+builder.Services.AddTransient<GetPossibleMethodsUseCase>();
 
 builder.Services.AddMudServices();
 

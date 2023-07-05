@@ -1,0 +1,14 @@
+@using BlazorMonaco.Editor
+
+<style>
+  #json-editor {
+    min-height: 200px;
+  }
+</style>
+
+<StandaloneCodeEditor
+@ref="editor"
+  Id="json-editor"
+  ConstructionOptions="EditorConstructionOptions"
+/>
+

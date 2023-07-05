@@ -4,7 +4,8 @@
   "description": "REST API for EasyStub",
   "main": "server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.ts"
   },
   "repository": {
     "type": "git",

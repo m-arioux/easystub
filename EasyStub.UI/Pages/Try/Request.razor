@@ -1,0 +1,17 @@
+<MudPaper Class="pa-4 my-4">
+    <MudForm Model="@ModelValue" @bind-IsValid="@success" @bind-Errors="@errors" >
+        <MudTextField @bind-Value="ModelValue.Path" T="string" Label="Path" Required="true" RequiredError="Path is required!" />
+
+        <MudSelect @bind-Value="ModelValue.Method" T="HttpMethod" Label="Method" Required="true" RequiredError="Method is required!" AnchorOrigin="Origin.BottomCenter">
+            @foreach (var method in GetPossibleMethods.Handle())
+            {
+                <MudSelectItem Value="method" />
+            }
+            
+        </MudSelect>
+
+        <div class="d-flex align-center mt-4">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" @onclick="Send">Send</MudButton>
+        </div>
+    </MudForm>   
+</MudPaper>
