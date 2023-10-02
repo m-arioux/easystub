@@ -1,12 +1,7 @@
-using System.Net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using EasyStub.UI.UseCases.GetEndpoints;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
-
 namespace EasyStub.UI.Pages.Try;
+
+using EasyStub.UI.UseCases.Endpoints;
+using Microsoft.AspNetCore.Components;
 
 public partial class TryPage : ComponentBase
 {

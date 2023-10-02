@@ -1,15 +1,17 @@
 <div>
-  Response code: @((int?)HttpResponse?.StatusCode) @HttpResponse?.StatusCode
+    Response code: @((int?)HttpResponse?.StatusCode) @HttpResponse?.StatusCode
 </div>
-<div>Content:</div>
-<MudPaper class="pa-4"> @content </MudPaper>
-<div>Headers:</div>
-<MudList>
-    @if (HttpResponse?.Headers is not null)
-    { @foreach (var (key, value) in
-  HttpResponse?.Headers)
-        {
-          <MudListItem Text="@(key + '-' + value)" />
-        }             }
-</MudList>
 
+<div>Content:</div>
+
+<MudPaper class="pa-4"> @content </MudPaper>
+
+    <div>Headers:</div>
+
+    @if (HttpResponse?.Headers is not null)
+{
+    @foreach (var (key, value) in HttpResponse?.Headers)
+    {
+        <div>@key: @string.Join(", ", value)</div>
+    }
+}

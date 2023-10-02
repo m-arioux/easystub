@@ -12,7 +12,7 @@ public partial class Response : ComponentBase
     [Parameter]
     public HttpResponseMessage HttpResponse
     {
-        get { return httpResponse; }
+        get => httpResponse;
         set { httpResponse = value; _ = ComputeAsyncValues(value); }
     }
 

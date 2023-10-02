@@ -1,7 +1,7 @@
 namespace EasyStub.UI.Pages;
 
 using EasyStub.UI.Pages.Endpoint;
-using EasyStub.UI.UseCases.GetEndpoints;
+using EasyStub.UI.UseCases.Endpoints;
 using Microsoft.AspNetCore.Components;
 
 public partial class Configuration : ComponentBase
