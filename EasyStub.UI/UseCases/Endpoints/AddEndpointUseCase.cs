@@ -21,7 +21,7 @@ public class AddEndpointUseCase : IUseCase
 
     public async Task Handle(Input input)
     {
-        var endpointDto = new EndpointDto(input.Path, input.Method.Method, (int)input.StatusCode, input.Body);
+        var endpointDto = new EndpointToCreateDto(input.Path, input.Method.Method, (int)input.StatusCode, input.Body);
 
         await client.AddEndpointAsync(endpointDto);
     }

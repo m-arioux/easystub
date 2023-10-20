@@ -21,8 +21,10 @@ public class GetEndpointsUseCase : IUseCase
         var result = await client.GetEndpointsAsync();
 
         return result.ConvertAll(x =>
-            new Endpoint(x.Path,
-            new HttpMethod(x.Method),
-            (HttpStatusCode)x.StatusCode));
+            new Endpoint(
+                new EndpointId(x.Id),
+                x.Path,
+                new HttpMethod(x.Method),
+                (HttpStatusCode)x.StatusCode));
     }
 }

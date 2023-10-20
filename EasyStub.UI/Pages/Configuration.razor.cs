@@ -8,13 +8,18 @@ public partial class Configuration : ComponentBase
 {
     List<UseCases.Endpoint> endpoints;
 
-    List<EndpointList.Action> actions = new() { new("Try it", null, (d) => { Console.WriteLine(d); return Task.CompletedTask; }) };
+    List<EndpointList.Action> actions;
 
     [Inject]
     private GetEndpointsUseCase getEndpoints { get; set; }
 
+    [Inject]
+    private NavigationManager NavManager { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
+        actions = new() { new("Try it", null, TryEndpoint) };
+
         await FetchEndpoints();
     }
 
@@ -22,5 +27,10 @@ public partial class Configuration : ComponentBase
     {
         endpoints = new();
         endpoints = await getEndpoints.Handle();
+    }
+
+    async Task TryEndpoint(UseCases.Endpoint endpoint)
+    {
+        NavManager.NavigateTo("/test");
     }
 }
