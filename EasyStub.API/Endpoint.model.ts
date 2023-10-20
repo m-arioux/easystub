@@ -1,3 +1,5 @@
+export type EndpointId = number;
+
 export interface UnsavedEndpoint {
   path: string;
   method: string;
@@ -5,8 +7,11 @@ export interface UnsavedEndpoint {
   statusCode: number;
 }
 
-export type Endpoint =
-  | UnsavedEndpoint
-  | {
-      id: string;
-    };
+export type Endpoint = UnsavedEndpoint & {
+  id: EndpointId;
+};
+
+export type PatchEndpoint = {
+  action: "EDIT" | "DELETE";
+  endpoint: Endpoint;
+};
