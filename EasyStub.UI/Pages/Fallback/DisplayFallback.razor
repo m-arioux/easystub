@@ -1,0 +1,21 @@
+﻿@using EasyStub.UI.UseCases.Fallback
+
+<MudPaper class="pa-4">
+
+    <MudText>TODO: read-only</MudText>
+
+    <MudField Label="Type code" Variant="Variant.Text">@Fallback.TypeCode</MudField>
+
+
+    @if (Fallback is JsonFallback jsonFallback)
+    {
+        <MudField Label="JSON" Variant="Variant.Text">@jsonFallback.Json</MudField>
+        <MudField Label="StatusCode" Variant="Variant.Text">@jsonFallback.StatusCode</MudField>
+    }
+
+    @if (Fallback is RedirectFallback redirectFallback)
+    {
+        <MudField Label="Base URL" Variant="Variant.Text">@redirectFallback.BaseUrl</MudField>
+    }
+</MudPaper>
+
