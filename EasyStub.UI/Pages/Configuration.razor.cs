@@ -45,4 +45,12 @@ public partial class Configuration : ComponentBase
     {
         NavManager.NavigateTo("/test");
     }
+
+    [Inject]
+    public SetFallbackUseCase SetFallback { get; set; }
+
+    async Task FallbackChanged(UseCases.Fallback.Fallback changed)
+    {
+        await SetFallback.Handle(changed);
+    }
 }

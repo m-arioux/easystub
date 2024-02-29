@@ -3,16 +3,10 @@ using EasyStub.UI.Infrastructure;
 
 namespace EasyStub.UI.UseCases.Fallback;
 
-public class GetFallbackUseCase : IUseCase
+public class GetFallbackUseCase(FallbackHttpClient client, FallbackFactory factory) : IUseCase
 {
-    private readonly FallbackHttpClient client;
-    private readonly FallbackFactory factory;
-
-    public GetFallbackUseCase(FallbackHttpClient client, FallbackFactory factory)
-    {
-        this.client = client;
-        this.factory = factory;
-    }
+    private readonly FallbackHttpClient client = client;
+    private readonly FallbackFactory factory = factory;
 
     public async Task<Fallback> Handle()
     {
@@ -22,13 +16,15 @@ public class GetFallbackUseCase : IUseCase
     }
 }
 
-public sealed class UnknownFallbackTypeException : Exception
+public sealed class UnknownFallbackTypeException(string type) : Exception($"The fallback type {type} is unknown.")
 {
-    public UnknownFallbackTypeException(string type) : base($"The fallback type {type} is unknown.") { }
 }
 
 public class FallbackFactory
 {
+    public static readonly IReadOnlyList<string> FallbackTypes = [
+        NotFoundFallback.Code, RedirectFallback.Code, JsonFallback.Code
+    ];
 
     public Fallback Create(FallbackDto dto) => dto.Type switch
     {
@@ -39,14 +35,9 @@ public class FallbackFactory
     };
 }
 
-public abstract class Fallback
+public abstract class Fallback(string typeCode)
 {
-    public Fallback(string typeCode)
-    {
-        TypeCode = typeCode;
-    }
-
-    public string TypeCode { get; }
+    public string TypeCode { get; } = typeCode;
 }
 
 public sealed class NotFoundFallback : Fallback
