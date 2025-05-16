@@ -2,20 +2,24 @@
 
 <MudPaper class="pa-4">
 
-    <MudText>TODO: read-only</MudText>
+    <MudSelect T="string" Label="Type" AnchorOrigin="Origin.BottomCenter" @bind-Value="Form.Type">
+        @foreach (var type in FallbackFactory.FallbackTypes)
+        {
+            <MudSelectItem Value="@type" />
+        }
+    </MudSelect>
 
-    <MudField Label="Type code" Variant="Variant.Text">@Fallback.TypeCode</MudField>
 
-
-    @if (Fallback is JsonFallback jsonFallback)
+    @if (Form.Type == JsonFallback.Code)
     {
-        <MudField Label="JSON" Variant="Variant.Text">@jsonFallback.Json</MudField>
-        <MudField Label="StatusCode" Variant="Variant.Text">@jsonFallback.StatusCode</MudField>
+        <MudField Label="JSON" Variant="Variant.Text" @bind-value="Form.Json"></MudField>
+        <MudField Label="StatusCode" Variant="Variant.Text" @bind-value="Form.StatusCode"></MudField>
     }
 
-    @if (Fallback is RedirectFallback redirectFallback)
+    @if (Form.Type == RedirectFallback.Code)
     {
-        <MudField Label="Base URL" Variant="Variant.Text">@redirectFallback.BaseUrl</MudField>
+        <MudField Label="Base URL" Variant="Variant.Text" @bind-value="Form.BaseUrl"></MudField>
     }
+
+    <MudButton Variant="Variant.Filled" @onclick="Update">Update</MudButton>
 </MudPaper>
-

@@ -24,6 +24,7 @@ builder.Services.AddTransient<GetPossibleMethodsUseCase>();
 
 builder.Services.AddTransient<FallbackHttpClient>();
 builder.Services.AddTransient<GetFallbackUseCase>();
+builder.Services.AddTransient<SetFallbackUseCase>();
 builder.Services.AddTransient<FallbackFactory>();
 
 builder.Services.AddMudServices();
