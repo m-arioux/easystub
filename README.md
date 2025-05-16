@@ -12,4 +12,4 @@ This will all be containerized into one single Docker image for ease of use.
 ## The stack
 API built with NodeJS & Express
 
-Web app built with Blazor (new to me, this is the first project I'm doing with this tech)
+Web app built with Blazor __WASM__ (new to me, this is the first project I'm doing with this tech)
