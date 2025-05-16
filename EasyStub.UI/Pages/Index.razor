@@ -3,7 +3,13 @@
 <PageTitle>Index</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Welcome into this stubbing world!</MudText>
-<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor!</MudText>
+
+<MudAlert Severity="Severity.Warning">Since this tool has no authentication, it can easily be modified by anyone and it
+    is not safe! Do not use in production environments.</MudAlert>
+
 <MudText>This app lets you customize an API to return anything you want.</MudText>
-<MudText>This is perfect for web APIs in QA environments in the software development lifecycle to allow testing some specific usecases.</MudText>
-<MudText>For example, let's say your API consumes a todo API. You can configure <strong>GET /todos/828321</strong> to return an HTTP 503 error to see if the error handling in your API works. In some error cases, we want to send emails or log something in the database. This is perfect to see if it really works outside of unit tests.</MudText>
+<MudText>This is perfect for web APIs in QA environments in the software development lifecycle to allow testing some
+    specific usecases.</MudText>
+<MudText>For example, let's say your API consumes a todo API. You can configure <strong>GET /todos/828321</strong> to
+    return an HTTP 503 error to see if the error handling in your API works. In some error cases, we want to send emails
+    or log something in the database. This is perfect to see if it really works outside of unit tests.</MudText>

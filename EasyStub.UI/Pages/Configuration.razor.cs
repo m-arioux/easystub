@@ -52,5 +52,6 @@ public partial class Configuration : ComponentBase
     async Task FallbackChanged(UseCases.Fallback.Fallback changed)
     {
         await SetFallback.Handle(changed);
+        await FetchFallback();
     }
 }

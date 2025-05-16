@@ -9,17 +9,28 @@
         }
     </MudSelect>
 
-
     @if (Form.Type == JsonFallback.Code)
     {
-        <MudField Label="JSON" Variant="Variant.Text" @bind-value="Form.Json"></MudField>
-        <MudField Label="StatusCode" Variant="Variant.Text" @bind-value="Form.StatusCode"></MudField>
+        <MudTooltip Text="This is the status code of the response">
+            <MudTextField Label="Status Code" Class="pb-3" Variant="Variant.Text" @bind-Value="Form.StatusCode">
+            </MudTextField>
+        </MudTooltip>
+
+        <MudInputLabel>JSON of the response</MudInputLabel>
+        <EasyStub.UI.Pages.Endpoint.JsonEditor.JsonEditor @ref="editor"></EasyStub.UI.Pages.Endpoint.JsonEditor.JsonEditor>
     }
 
     @if (Form.Type == RedirectFallback.Code)
     {
-        <MudField Label="Base URL" Variant="Variant.Text" @bind-value="Form.BaseUrl"></MudField>
+        <MudTooltip
+            Text="E.g: if the base URL is google.com, when the server receives GET /test it will delegate to google.com/test">
+            <MudTextField Label="Base URL" Variant="Variant.Text" @bind-Value="Form.BaseUrl"></MudTextField>
+        </MudTooltip>
+
     }
 
-    <MudButton Variant="Variant.Filled" @onclick="Update">Update</MudButton>
+    <div class="py-4">
+        <MudButton Variant="Variant.Filled" @onclick="Update">Update</MudButton>
+    </div>
+
 </MudPaper>

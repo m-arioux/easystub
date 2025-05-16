@@ -1,9 +1,7 @@
-using System.Runtime.Serialization;
-using System.Net;
-using System;
 using Microsoft.AspNetCore.Components;
 using EasyStub.UI.UseCases.Fallback;
 using EasyStub.UI.Infrastructure;
+using EasyStub.UI.Pages.Endpoint.JsonEditor;
 
 namespace EasyStub.UI.Pages.Fallback;
 
@@ -21,7 +19,7 @@ public partial class DisplayFallback : ComponentBase
     [Parameter]
     public UseCases.Fallback.Fallback? Fallback { get; set; }
 
-    protected override void OnParametersSet()
+    protected override async Task OnParametersSetAsync()
     {
         Form = new();
 
@@ -39,6 +37,8 @@ public partial class DisplayFallback : ComponentBase
         {
             Form.Json = jsonFallback.Json;
             Form.StatusCode = (int)jsonFallback.StatusCode;
+
+            await editor.SetValueAsync(jsonFallback.Json);
         }
     }
 
@@ -50,8 +50,11 @@ public partial class DisplayFallback : ComponentBase
     [Inject]
     public FallbackFactory FallbackFactory { get; set; }
 
+    JsonEditor editor = null;
+
     public async Task Update()
     {
+        Form.Json = await editor.GetValueAsync();
         var dto = new FallbackDto(Form.Type, Form.StatusCode, Form.Json, Form.BaseUrl);
 
         var updated = FallbackFactory.Create(dto);
