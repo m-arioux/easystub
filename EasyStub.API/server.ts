@@ -1,29 +1,17 @@
-import express from "express";
-import { createProxyMiddleware } from "http-proxy-middleware";
-import morgan from "morgan";
 import cors from "cors";
-import { Endpoint } from "./Endpoint.model";
+import express from "express";
+import asyncHandler from "express-async-handler";
+import morgan from "morgan";
+import { UnsavedEndpoint } from "./Endpoint.model";
+import { setupFallback, useFallback } from "./fallback";
+import { EndpointsRepository } from "./infrastructure/endpoints.repository";
 
 const app = express();
 const port = 3000;
 
-type Fallback = {
-  type: "NOT_FOUND" | "REDIRECT" | "JSON";
-  statusCode: number;
-  json?: any;
-  baseUrl?: string;
-};
-
-let fallback: Fallback = { type: "NOT_FOUND", statusCode: 404 };
-
 let router: express.Router | undefined = undefined;
 
-type PatchEndpoint = {
-  action: "EDIT" | "DELETE";
-  endpoint: Endpoint;
-};
-
-function setupRouter(endpoints: Endpoint[]) {
+function setupRouter(endpointsRepository: EndpointsRepository) {
   router = express.Router();
 
   router.use(morgan("combined"));
@@ -37,33 +25,26 @@ function setupRouter(endpoints: Endpoint[]) {
   });
 
   router.get("/_admin/endpoints", (req, res) => {
-    res.send(endpoints);
+    res.send(endpointsRepository.getAll());
   });
 
-  router.post("/_admin/endpoints", (req, res) => {
-    const endpoint: Endpoint = req.body;
+  router.post(
+    "/_admin/endpoints",
+    asyncHandler(async (req, res) => {
+      const endpoint: UnsavedEndpoint = req.body;
 
-    const newEndpoints = [...endpoints, endpoint];
-    setupRouter(newEndpoints);
+      const createdEndpoint = await endpointsRepository.create(endpoint);
 
-    res.status(200);
-    res.send(newEndpoints);
-  });
+      setupRouter(endpointsRepository);
 
-  router.get("/_admin/fallback", (req, res) => {
-    res.send(fallback);
-  });
+      res.status(200);
+      res.send(createdEndpoint);
+    })
+  );
 
-  router.patch("/_admin/fallback", (req, res) => {
-    console.log("received", req.body);
-    const newFallback = req.body; // TODO: validate
+  setupFallback(router);
 
-    fallback = newFallback;
-
-    res.send();
-  });
-
-  for (const endpoint of endpoints) {
+  for (const endpoint of endpointsRepository.getAll()) {
     router.use(endpoint.path, (req, res, next) => {
       if (req.method !== endpoint.method) {
         next();
@@ -75,27 +56,7 @@ function setupRouter(endpoints: Endpoint[]) {
     });
   }
 
-  router.use((req, res, next) => {
-    if (fallback.type === "JSON") {
-      res.status(fallback.statusCode);
-      res.send(fallback.json);
-      next();
-      return;
-    }
-
-    if (fallback.type === "REDIRECT") {
-      createProxyMiddleware({ target: fallback.baseUrl, changeOrigin: true })(
-        req,
-        res,
-        next
-      );
-      return;
-    }
-
-    res.status(404);
-    res.send();
-    next();
-  });
+  useFallback(router);
 }
 
 app.use((req, res, next) => {
@@ -104,7 +65,7 @@ app.use((req, res, next) => {
   router(req, res, next);
 });
 
-setupRouter([]);
+setupRouter(new EndpointsRepository());
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
