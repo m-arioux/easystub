@@ -1,0 +1,59 @@
+@page "/admin"
+
+<PageTitle>Admin Panel</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Admin Panel</MudText>
+
+<section>
+  <MudText Typo="Typo.h4" GutterBottom="true">Endpoints</MudText>
+
+  <MudSimpleTable Style="overflow-x: auto;">
+    <thead>
+      <tr>
+                @foreach (var h in headings)
+                {
+            <th>@h</th>
+                }
+      </tr>
+    </thead>
+    <tbody>
+            @foreach (var endpoint in endpoints)
+            {
+          <tr>
+            <td><b>@endpoint.Method</b> @endpoint.Path</td>
+            <td>@endpoint.StatusCode</td>
+            <td>
+                <MudMenu Icon="@Icons.Material.Filled.Menu">
+                    <MudMenuItem Icon="@Icons.Material.Filled.PlayArrow">Try it!</MudMenuItem>
+                    <MudMenuItem Icon="@Icons.Material.Filled.Delete">Delete</MudMenuItem>
+                </MudMenu>
+            </td>
+          </tr>
+            }
+            @if(endpoints.Count() == 0)
+            {
+                <tr><td colspan="@headings.Count()">No endpoint configured</td></tr>
+            }
+    </tbody>
+  </MudSimpleTable>
+
+  <MudStack Class="mt-4" Row="true">
+  <MudButton
+    Color="Color.Primary"
+    Variant="Variant.Filled"
+    StartIcon="@Icons.Material.Filled.Add"
+    >Add a new endpoint</MudButton>
+
+      <MudButton
+    Color="Color.Success"
+    StartIcon="@Icons.Material.Filled.Refresh"
+    @onclick="FetchEndpoints"
+    >Refresh</MudButton>
+  </MudStack>
+
+
+
+
+    
+</section>
+
