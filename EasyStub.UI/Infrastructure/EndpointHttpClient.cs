@@ -7,11 +7,15 @@ public record EndpointDto(string Path, string Method, int StatusCode, object Bod
 public class EndpointHttpClient
 {
     private readonly HttpClient client;
-    public EndpointHttpClient(HttpClient client) => this.client = client;
+    public EndpointHttpClient(HttpClient client)
+    {
+        this.client = client;
+        Console.WriteLine($"base url httpclient is {client.BaseAddress}");
+    }
 
     public async Task<List<EndpointDto>?> GetEndpointsAsync() =>
-        await client.GetFromJsonAsync<List<EndpointDto>>("/_admin/endpoints");
+        await client.GetFromJsonAsync<List<EndpointDto>>("_admin/endpoints");
 
     public async Task AddEndpointAsync(EndpointDto endpoint) =>
-        await client.PostAsJsonAsync("/_admin/endpoints", endpoint);
+        await client.PostAsJsonAsync("_admin/endpoints", endpoint);
 }

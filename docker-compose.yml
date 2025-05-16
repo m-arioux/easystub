@@ -1,0 +1,14 @@
+version: "3.0"
+services:
+  ui:
+    container_name: ui
+    build: ./EasyStub.UI
+    ports:
+      - 80:80
+    environment:
+      - API_BASE_URL
+  api:
+    container_name: api
+    build: ./EasyStub.API
+    ports:
+      - 3000:3000
