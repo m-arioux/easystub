@@ -2,6 +2,7 @@ import express from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import morgan from "morgan";
 import cors from "cors";
+import { Endpoint } from "./Endpoint.model";
 
 const app = express();
 const port = 3000;
@@ -16,13 +17,6 @@ type Fallback = {
 let fallback: Fallback = { type: "NOT_FOUND", statusCode: 404 };
 
 let router: express.Router | undefined = undefined;
-
-type Endpoint = {
-  path: string;
-  method: string;
-  body: any;
-  statusCode: number;
-};
 
 type PatchEndpoint = {
   action: "EDIT" | "DELETE";
