@@ -5,6 +5,7 @@ using MudBlazor.Services;
 using EasyStub.UI.UseCases.Endpoints;
 using EasyStub.UI.Infrastructure;
 using EasyStub.UI.UseCases.Method;
+using EasyStub.UI.UseCases.Fallback;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -20,6 +21,10 @@ builder.Services.AddTransient<EndpointHttpClient>();
 builder.Services.AddTransient<GetEndpointsUseCase>();
 builder.Services.AddTransient<AddEndpointUseCase>();
 builder.Services.AddTransient<GetPossibleMethodsUseCase>();
+
+builder.Services.AddTransient<FallbackHttpClient>();
+builder.Services.AddTransient<GetFallbackUseCase>();
+builder.Services.AddTransient<FallbackFactory>();
 
 builder.Services.AddMudServices();
 

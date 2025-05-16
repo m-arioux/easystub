@@ -1,14 +1,24 @@
 import { Router } from "express";
 import { createProxyMiddleware } from "http-proxy-middleware";
 
-export type Fallback = {
-  type: "NOT_FOUND" | "REDIRECT" | "JSON";
+export type Fallback = NotFoundFallback | RedirectFallback | JsonFallback;
+
+export interface NotFoundFallback {
+  type: "NOT_FOUND";
+}
+
+export interface RedirectFallback {
+  type: "REDIRECT";
+  baseUrl: string;
+}
+
+export interface JsonFallback {
+  type: "JSON";
   statusCode: number;
   json?: any;
-  baseUrl?: string;
-};
+}
 
-let fallback: Fallback = { type: "NOT_FOUND", statusCode: 404 };
+let fallback: Fallback = { type: "NOT_FOUND" };
 
 export function setupFallback(router: Router) {
   router.get("/_admin/fallback", (req, res) => {

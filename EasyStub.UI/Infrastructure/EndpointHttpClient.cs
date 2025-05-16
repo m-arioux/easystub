@@ -1,7 +1,7 @@
-namespace EasyStub.UI.Infrastructure;
 
 using System.Net.Http.Json;
 
+namespace EasyStub.UI.Infrastructure;
 public record EndpointDto(int Id, string Path, string Method, int StatusCode, object Body);
 
 public record EndpointToCreateDto(string Path, string Method, int StatusCode, object Body);
@@ -12,7 +12,6 @@ public class EndpointHttpClient
     public EndpointHttpClient(HttpClient client)
     {
         this.client = client;
-        Console.WriteLine($"base url httpclient is {client.BaseAddress}");
     }
 
     public async Task<List<EndpointDto>?> GetEndpointsAsync() =>

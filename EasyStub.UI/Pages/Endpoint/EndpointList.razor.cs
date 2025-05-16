@@ -1,6 +1,7 @@
-namespace EasyStub.UI.Pages.Endpoint;
 
 using Microsoft.AspNetCore.Components;
+
+namespace EasyStub.UI.Pages.Endpoint;
 
 public partial class EndpointList
 {
