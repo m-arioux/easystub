@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EasyStub.UI.Infrastructure;
 
-namespace EasyStub.UI.UseCases.AddEndpoint;
+namespace EasyStub.UI.UseCases.Endpoints;
 
 public class AddEndpointUseCase : IUseCase
 {

@@ -1,35 +1,38 @@
 @page "/admin/endpoints/new"
 
 @using System.Net;
+@using System.ComponentModel.DataAnnotations;
 
 <PageTitle>Create a new endpoint</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Create a new endpoint</MudText>
 
 <MudPaper Class="pa-4">
-    <MudForm Model="@model" @bind-IsValid="@success" @bind-Errors="@errors" >
-        <MudTextField @bind-Value="model.Path" T="string" Label="Path" Required="true" RequiredError="Path is required!" />
+    <MudForm Model="@model" @bind-IsValid="@success" @bind-Errors="@errors">
+        <MudTextField @bind-Value="model.Path" T="string" Label="Path" Required="true" RequiredError="Path is required!"
+            Validation="@(new RegularExpressionAttribute("/.+"){ErrorMessage = "The path must start with a '/' and be followed by a string"})" />
 
-        <MudSelect @bind-Value="model.Method" T="HttpMethod" Label="Method" Required="true" RequiredError="Method is required!" AnchorOrigin="Origin.BottomCenter">
+        <MudSelect @bind-Value="model.Method" T="HttpMethod" Label="Method" Required="true"
+            RequiredError="Method is required!" AnchorOrigin="Origin.BottomCenter">
             @foreach (var method in GetPossibleMethods.Handle())
             {
                 <MudSelectItem Value="method" />
             }
-            
+
         </MudSelect>
 
-        <MudAutocomplete @bind-Value="model.StatusCode" T="HttpStatusCode?" Label="Status code" Required="true" MaxItems="999" CoerceValue="true" SearchFunc="@SearchStatusCodes" ToStringFunc="@Display" ></MudAutocomplete>
+        <MudAutocomplete @bind-Value="model.StatusCode" T="HttpStatusCode?" Label="Status code" Required="true"
+            MaxItems="999" CoerceValue="true" SearchFunc="@SearchStatusCodes" ToStringFunc="@Display"></MudAutocomplete>
 
         <label class="mt-4">Response body (JSON)</label>
 
-        <EasyStub.UI.Pages.Endpoint.JsonEditor.JsonEditor @ref="editor"></EasyStub.UI.Pages.Endpoint.JsonEditor.JsonEditor>
-        
+        <EasyStub.UI.Pages.Endpoint.JsonEditor.JsonEditor @ref="editor">
+        </EasyStub.UI.Pages.Endpoint.JsonEditor.JsonEditor>
+
 
         <div class="d-flex align-center mt-4">
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" @onclick="Create">Create</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" @onclick="Create">Create
+            </MudButton>
         </div>
-    </MudForm>   
+    </MudForm>
 </MudPaper>
-
-
-

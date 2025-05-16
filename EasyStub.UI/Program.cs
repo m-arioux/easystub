@@ -2,9 +2,8 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using EasyStub.UI;
 using MudBlazor.Services;
-using EasyStub.UI.UseCases.GetEndpoints;
+using EasyStub.UI.UseCases.Endpoints;
 using EasyStub.UI.Infrastructure;
-using EasyStub.UI.UseCases.AddEndpoint;
 using EasyStub.UI.UseCases.Method;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

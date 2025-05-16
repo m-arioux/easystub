@@ -1,24 +1,18 @@
-using System.Xml.Schema;
-using System.Net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
-using MudBlazor;
-using EasyStub.UI.UseCases.AddEndpoint;
-using EasyStub.UI.UseCases.Method;
-
 namespace EasyStub.UI.Pages.Endpoint;
+
+
+using System.Net;
+using Microsoft.AspNetCore.Components;
+using MudBlazor;
+using EasyStub.UI.UseCases.Endpoints;
+using EasyStub.UI.UseCases.Method;
 
 public partial class AddEndpoint : ComponentBase
 {
 
     public class Model
     {
-        public string? Path { get; set; }
+        public string? Path { get; set; } = "/";
         public HttpMethod? Method { get; set; }
         public HttpStatusCode? StatusCode { get; set; }
     }
@@ -44,18 +38,17 @@ public partial class AddEndpoint : ComponentBase
     private readonly List<HttpStatusCode> possibleStatusCodes =
         Enum.GetValues(typeof(HttpStatusCode)).Cast<HttpStatusCode>().ToList();
 
-    private Task<IEnumerable<HttpStatusCode?>> SearchStatusCodes(string value)
+    private Task<IEnumerable<HttpStatusCode?>> SearchStatusCodes(string? value)
     {
-        var readyValue = value.ToLowerInvariant();
+        var readyValue = (value ?? "").ToLowerInvariant();
 
         var result = possibleStatusCodes
-                .Where(x => Display(x).ToLowerInvariant().Contains(value))
+                .Where(x => Display(x).ToLowerInvariant().Contains(readyValue))
                 .Cast<HttpStatusCode?>()
                 .ToHashSet()
                 .AsEnumerable();
 
-        return Task.FromResult(result
-            );
+        return Task.FromResult(result);
     }
 
     private static string Display(HttpStatusCode? statusCode)
