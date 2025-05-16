@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using MudBlazor;
 using EasyStub.UI.UseCases.AddEndpoint;
+using EasyStub.UI.UseCases.Method;
 
 namespace EasyStub.UI.Pages.Endpoint;
 
@@ -27,6 +28,8 @@ public partial class AddEndpoint : ComponentBase
     MudForm form;
     Model model = new();
 
+    JsonEditor.JsonEditor editor = null;
+
     public class MisconfiguredException : Exception
     {
         public MisconfiguredException(string component) : base($"Misconfigured {component}")
@@ -35,13 +38,8 @@ public partial class AddEndpoint : ComponentBase
         }
     }
 
-    private readonly List<HttpMethod> possibleMethods =
-        typeof(HttpMethod)
-            .GetProperties()
-            .Where(x => x.PropertyType == typeof(HttpMethod))
-            .Select(x => (HttpMethod?)x.GetValue(null))
-            .Select(x => x ?? throw new MisconfiguredException("PossibleMethods"))
-            .ToList();
+    [Inject]
+    public GetPossibleMethodsUseCase GetPossibleMethods { get; set; } = null;
 
     private readonly List<HttpStatusCode> possibleStatusCodes =
         Enum.GetValues(typeof(HttpStatusCode)).Cast<HttpStatusCode>().ToList();
@@ -83,11 +81,11 @@ public partial class AddEndpoint : ComponentBase
             model.Path,
             model.Method ?? throw new ArgumentNullException(nameof(model.Method)),
             model.StatusCode ?? throw new ArgumentNullException(nameof(model.StatusCode)),
-            null);
+            await editor.GetValueAsync());
 
         await addEndpoint.Handle(x);
 
-        Snackbar.Add("Endpoint created successfully", Severity.Success);
+        _ = Snackbar.Add("Endpoint created successfully", Severity.Success);
 
         navManager.NavigateTo("/admin");
     }

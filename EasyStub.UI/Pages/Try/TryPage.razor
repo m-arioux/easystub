@@ -1,0 +1,38 @@
+@page "/test"
+
+@using EasyStub.UI.Pages.Endpoint;
+
+<style>
+
+</style>
+
+<PageTitle>Try endpoints</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Try a endpoint</MudText>
+
+<MudExpansionPanels>
+    <MudExpansionPanel MaxHeight="500">
+        <TitleContent>
+            <div class="d-flex">
+                <MudIcon Icon="@Icons.Material.Filled.Save" class="mr-3"></MudIcon>
+                <MudText>From configured endpoints</MudText>
+            </div>
+        </TitleContent>
+        <ChildContent>
+            <div class="overflow-scroll" style="max-height: 500px">
+                <EndpointList Endpoints="endpoints" Actions="listActions"></EndpointList>           
+            </div>
+        </ChildContent>
+    
+    </MudExpansionPanel>
+</MudExpansionPanels>
+
+
+
+
+
+<Request @ref="request" OnSend="Send"></Request>
+
+<MudText Typo="Typo.h5" GutterBottom="true">Returned value</MudText>
+
+<Response HttpResponse="response"></Response>
