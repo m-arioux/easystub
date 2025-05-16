@@ -1,0 +1,35 @@
+{
+  "name": "easystub.api",
+  "version": "1.0.0",
+  "description": "REST API for EasyStub",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m-arioux/easystub.git"
+  },
+  "keywords": [
+    "easy",
+    "stub",
+    "api",
+    "rest",
+    "express",
+    "nodejs",
+    "easystub",
+    "configurable",
+    "config"
+  ],
+  "author": "m-arioux",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/m-arioux/easystub/issues"
+  },
+  "homepage": "https://github.com/m-arioux/easystub#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "http-proxy-middleware": "^2.0.6",
+    "morgan": "^1.10.0"
+  }
+}

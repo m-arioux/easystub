@@ -1,0 +1,34 @@
+@host=http://localhost:3000
+
+GET {{host}}/_admin/endpoints
+
+###
+
+PATCH {{host}}/_admin/endpoints
+Content-Type: application/json
+
+{
+    "action": "EDIT",
+    "endpoint": {
+        "path": "/pokemons",
+        "method": "GET",
+        "statusCode": 200,
+        "body": [{"id": "12345", "name": "pikachu"}]
+    }
+}
+
+###
+
+POST {{host}}/_admin/endpoints
+Content-Type:  application/json
+
+{
+    "path": "/pokemons/12345",
+    "method": "GET",
+    "statusCode": 200,
+    "body": {"id": "12345", "name": "pikachu"}
+    
+}
+
+###
+GET {{host}}/pokemons/12345
